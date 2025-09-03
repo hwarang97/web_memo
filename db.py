@@ -10,8 +10,8 @@ CREATE TABLE users (
 '''
 
 CREATE_MEMO = '''
-CREATE TABLE MEMO (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
+CREATE TABLE memos (
+    memo_id INTEGER PRIMARY KEY AUTOINCREMENT,
     title TEXT NOT NULL,
     content TEXT NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -29,14 +29,14 @@ def create_table(cursor, table_name, script):
         cursor.execute(script)
 
 # crate database
-con = sqlite3.connect('database.db')
+with sqlite3.connect('database.db') as con:
 
-# make cursor to manipulate database
-cursor = con.cursor()
+    # make cursor to manipulate database
+    cursor = con.cursor()
 
-# create database
-create_table(cursor, 'USER', CREATE_USER)
-create_table(cursor, 'MEMO', CREATE_MEMO)
+    # create database
+    create_table(cursor, 'users', CREATE_USER)
+    create_table(cursor, 'memos', CREATE_MEMO)
 
-# save changes
-con.commit()
+# close connection
+con.close()
